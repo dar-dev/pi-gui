@@ -99,6 +99,7 @@ import {
   serializeCompatibilityByWorkspace,
 } from "../conversation/extension-command-compatibility";
 import {
+  addWorkspaceGitBranches,
   buildWorktreeRecords,
   buildWorkspaceRecords,
   cloneComposerAttachment,
@@ -2395,16 +2396,18 @@ export class DesktopAppStore {
         await this.ensureComposerAttachmentsLoaded(sessionRef);
       }
 
-      const workspaces = buildWorkspaceRecords(
-        workspacesSnapshot.workspaces,
-        worktreeEntries,
-        sessionsSnapshot.sessions,
-        this.sessionState.transcriptCache,
-        this.sessionState.runningSinceBySession,
-        this.sessionState.sessionConfigBySession,
-        this.sessionState.lastViewedAtBySession,
-        this.sessionState.lastInteractedAtBySession,
-        this.sessionState.pinnedAtBySession,
+      const workspaces = await addWorkspaceGitBranches(
+        buildWorkspaceRecords(
+          workspacesSnapshot.workspaces,
+          worktreeEntries,
+          sessionsSnapshot.sessions,
+          this.sessionState.transcriptCache,
+          this.sessionState.runningSinceBySession,
+          this.sessionState.sessionConfigBySession,
+          this.sessionState.lastViewedAtBySession,
+          this.sessionState.lastInteractedAtBySession,
+          this.sessionState.pinnedAtBySession,
+        ),
       );
       const worktreesByWorkspace = buildWorktreeRecords(
         workspacesSnapshot.workspaces,

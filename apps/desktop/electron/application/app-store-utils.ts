@@ -1,4 +1,6 @@
 import { randomUUID } from "node:crypto";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import type {
   SessionCatalogEntry,
   WorkspaceCatalogEntry,
@@ -21,7 +23,31 @@ import type {
   WorkspaceSessionTarget,
 } from "../../contracts/desktop-state";
 
+const execFileAsync = promisify(execFile);
+
 export const LEGACY_TRANSCRIPT_HISTORY_LIMIT = 180;
+
+export async function addWorkspaceGitBranches(
+  workspaces: readonly WorkspaceRecord[],
+): Promise<WorkspaceRecord[]> {
+  return Promise.all(
+    workspaces.map(async (workspace) => {
+      try {
+        const { stdout } = await execFileAsync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
+          cwd: workspace.path,
+          timeout: 3000,
+          windowsHide: true,
+        });
+        const branchName = stdout.trim();
+        return branchName && branchName !== "HEAD"
+          ? { ...workspace, branchName }
+          : { ...workspace, branchName: undefined };
+      } catch {
+        return { ...workspace, branchName: undefined };
+      }
+    }),
+  );
+}
 
 export function mapToRecord<V>(map: Map<string, V>): Record<string, V> {
   return Object.fromEntries(map.entries());

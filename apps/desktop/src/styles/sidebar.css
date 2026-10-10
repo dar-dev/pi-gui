@@ -303,8 +303,8 @@
   width: 100%;
   display: grid;
   align-items: center;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
   min-width: 0;
   padding-left: 23px;
   text-align: left;
@@ -386,6 +386,20 @@
   font-size: 13px;
   font-weight: var(--font-medium);
   color: var(--muted-strong);
+}
+
+.workspace-row__branch {
+  min-width: 0;
+  overflow: hidden;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--surface-muted);
+  color: var(--muted-soft);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 450;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .worktree-row__name {

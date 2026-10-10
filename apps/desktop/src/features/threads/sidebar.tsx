@@ -796,6 +796,11 @@ function WorkspaceFolderContent(
             ) : null}
           </span>
           <span className="workspace-row__name">{workspace.name}</span>
+          {workspace.branchName ? (
+            <span className="workspace-row__branch" title={workspace.branchName}>
+              {workspace.branchName}
+            </span>
+          ) : null}
         </button>
         <span className="workspace-row__actions">
           {onNewThread ? (
