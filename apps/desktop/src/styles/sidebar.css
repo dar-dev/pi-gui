@@ -114,13 +114,19 @@
   overflow: auto;
   /* Keeps the scrollbar clear of the resize handle on the right edge. */
   margin-right: 4px;
+  padding-top: 0;
   padding-right: 8px;
 }
 
 .section__head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: 12px;
+  background: var(--sidebar);
   color: var(--muted);
   font-size: 12px;
   font-weight: var(--font-medium);
